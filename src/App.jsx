@@ -34,7 +34,7 @@ import OperatorLogin from "@/pages/operator-login";
 import EmailVerifyCallback from "./pages/EmailVerifyCallback";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
-import AuthCallback from "./pages/authCallback";
+import AuthCallback from "./pages/AuthCallback";
 import SettingsPage from "@/pages/Settings";
 import OwnerBilling from "@/pages/owner/OwnerBilling";
 
