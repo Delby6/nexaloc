@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><style>
+    #light-icon {
+      display: inline;
+    }
+    #dark-icon {
+      display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #light-icon {
+        display: none;
+      }
+      #dark-icon {
+        display: inline;
+      }
+    }
+  </style><g id="light-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g clip-path="url(#SvgjsClipPath1139)"><rect width="1000" height="1000" fill="#ffffff"></rect><g transform="matrix(3.5,0,0,3.5,150,150)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="78" fill="none" stroke="#2563eb" stroke-width="14"></circle>
+  <circle cx="100" cy="100" r="18" fill="#2563eb"></circle>
+
+  <line x1="100" y1="100" x2="65" y2="75" stroke="#2563eb" stroke-width="10" stroke-linecap="round"></line>
+  <circle cx="65" cy="75" r="10" fill="#2563eb"></circle>
+
+  <line x1="100" y1="100" x2="135" y2="75" stroke="#2563eb" stroke-width="10" stroke-linecap="round"></line>
+  <circle cx="135" cy="75" r="10" fill="#2563eb"></circle>
+
+  <line x1="100" y1="100" x2="100" y2="140" stroke="#2563eb" stroke-width="10" stroke-linecap="round"></line>
+  <circle cx="100" cy="140" r="10" fill="#2563eb"></circle>
+</svg></svg></g></g><defs><clipPath id="SvgjsClipPath1139"><rect width="1000" height="1000" x="0" y="0" rx="350" ry="350"></rect></clipPath></defs></svg></g><g id="dark-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g clip-path="url(#SvgjsClipPath1140)"><rect width="1000" height="1000" fill="#0b1220"></rect><g transform="matrix(3.5,0,0,3.5,150,150)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="78" fill="none" stroke="#2563eb" stroke-width="14"></circle>
+  <circle cx="100" cy="100" r="18" fill="#2563eb"></circle>
+
+  <line x1="100" y1="100" x2="65" y2="75" stroke="#2563eb" stroke-width="10" stroke-linecap="round"></line>
+  <circle cx="65" cy="75" r="10" fill="#2563eb"></circle>
+
+  <line x1="100" y1="100" x2="135" y2="75" stroke="#2563eb" stroke-width="10" stroke-linecap="round"></line>
+  <circle cx="135" cy="75" r="10" fill="#2563eb"></circle>
+
+  <line x1="100" y1="100" x2="100" y2="140" stroke="#2563eb" stroke-width="10" stroke-linecap="round"></line>
+  <circle cx="100" cy="140" r="10" fill="#2563eb"></circle>
+</svg></svg></g></g><defs><clipPath id="SvgjsClipPath1140"><rect width="1000" height="1000" x="0" y="0" rx="350" ry="350"></rect></clipPath></defs></svg></g></svg>

@@ -1,0 +1,21 @@
+{
+  "name": "Nexaloc",
+  "short_name": "Nexaloc",
+  "description": "Unified infrastructure for onboarding, discovery, and operations across local digital business ecosystems.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
