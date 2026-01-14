@@ -34,13 +34,26 @@ const app = express();
 /* ---------------------------------------------------------
    CORS — LOCAL + PRODUCTION (Render/Vercel)
 --------------------------------------------------------- */
-const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:5173";
+
+// Comma-separated list from Render env var, e.g.
+// "http://localhost:5173,https://nexaloc.vercel.app"
+const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:5173")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
 
 app.set("trust proxy", 1); // important behind Render proxy
 
 app.use(
   cors({
-    origin: allowedOrigin,
+    origin: (origin, cb) => {
+      // Allow requests with no origin (curl, Render health checks, server-to-server)
+      if (!origin) return cb(null, true);
+
+      if (allowedOrigins.includes(origin)) return cb(null, true);
+
+      return cb(new Error(`CORS blocked for origin: ${origin}`));
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
