@@ -59,6 +59,9 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+console.log("CORS_ORIGINS raw:", process.env.CORS_ORIGINS);
+console.log("Allowed origins parsed:", allowedOrigins);
+
 
 
 /* ---------------------------------------------------------
