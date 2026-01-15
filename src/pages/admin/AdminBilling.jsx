@@ -20,7 +20,7 @@ import {
   DollarSign,
 } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
+import { API_BASE } from "@/lib/apiBase";
 
 const MONTHLY_PRICE_ID =
   import.meta.env.VITE_STRIPE_PRO_MONTHLY_PRICE_ID ||
