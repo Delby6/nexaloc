@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { logServiceCheck, logWarning } from "@/lib/systemLogger";
+import { API_BASE } from "@/lib/apiBase";
+
 
 /**
  * useHealthMonitor — FINAL LOGGING VERSION
@@ -43,14 +45,14 @@ export default function useHealthMonitor() {
   const MAX_ERRORS = 40;
 
   // -----------------------------------------------------------
-  // 1. REAL ENDPOINTS (using your real Supabase domain)
+  // 1. REAL ENDPOINTS (using real Supabase domain)
   // -----------------------------------------------------------
 
   const SUPABASE_URL = "https://xlsuoimvctjjvedyhewn.supabase.co";
 
   const endpoints = {
-    api: "http://localhost:8080/api/ai/ping", // your AI service
-    ai: "http://localhost:8080/api/ai/ping", // same endpoint
+    api: `${API_BASE}/api/ai/ping`,
+    ai: `${API_BASE}/api/ai/ping`,
     supabaseRest: `${SUPABASE_URL}/rest/v1/?select=1`, // safe HEAD-friendly
     supabaseAuth: `${SUPABASE_URL}/auth/v1/health`, // safe
     supabaseStorage: `${SUPABASE_URL}/storage/v1/buckets`, // GET-safe

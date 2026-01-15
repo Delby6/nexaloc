@@ -1,4 +1,6 @@
 import { useEffect, useState, useRef } from "react";
+import { API_BASE } from "@/lib/apiBase";
+
 
 export default function useSystemHealth(interval = 5000, maxPoints = 30) {
   const [data, setData] = useState([]);
@@ -8,8 +10,7 @@ export default function useSystemHealth(interval = 5000, maxPoints = 30) {
     async function ping() {
       const start = performance.now();
       try {
-        const res = await fetch("http://localhost:8080/api/ai/ping");
-        const ok = res.ok;
+        const res = await fetch(`${API_BASE}/api/ai/ping`);
         const ms = Math.round(performance.now() - start);
 
         setData((prev) => {

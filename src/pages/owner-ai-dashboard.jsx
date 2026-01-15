@@ -3,7 +3,7 @@
 // White SaaS cards, dark-mode aware, all AI tools on one page
 //
 // ✅ UPDATED: Uses YOUR backend endpoints (NO client OpenAI key)
-// - POST http://localhost:8080/api/ai/owner/generate  (PRO-only)
+// - POST `${API_BASE}/api/ai/owner/generate  (PRO-only)
 // Body: { userId, prompt, mode? }
 // Returns: { ok: true, output: string, meta? }
 // -------------------------------------------------------------
@@ -22,6 +22,8 @@ import {
   Target,
   Lock,
 } from "lucide-react";
+import { API_BASE } from "@/lib/apiBase";
+
 
 // ---- Rate limiting constants (Hybrid) ----
 const GLOBAL_COOLDOWN_MS = 1000; // 1s global cooldown between ANY AI calls
@@ -30,7 +32,7 @@ const CHAT_COOLDOWN_MS = 1500; // 1.5s chat cooldown
 
 // ✅ Owner AI calls go through YOUR backend (PRO-only route)
 async function callOwnerAI({ userId, prompt, mode = "default" }) {
-  const res = await fetch("http://localhost:8080/api/ai/owner/generate", {
+  const res = await fetch(`${API_BASE}/api/ai/owner/generate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",

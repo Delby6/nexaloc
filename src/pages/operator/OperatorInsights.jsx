@@ -1,5 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import { API_BASE } from "@/lib/apiBase";
+
 
 export default function OperatorInsights() {
   const [users, setUsers] = useState([]);
@@ -121,7 +123,7 @@ export default function OperatorInsights() {
     };
 
     try {
-      const res = await fetch("http://localhost:8080/api/ai-insights", {
+      const res = await fetch(`${API_BASE}/api/ai-insights`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

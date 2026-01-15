@@ -1,7 +1,9 @@
+import { API_BASE } from "@/lib/apiBase";
+
 export default function SystemActions() {
   async function trigger(action) {
     try {
-      await fetch(`http://localhost:8080/api/system/${action}`, {
+      await fetch(`${API_BASE}/api/system/${action}`, {
         method: "POST"
       });
       alert(`Action triggered: ${action}`);

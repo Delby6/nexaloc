@@ -3,11 +3,12 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import CookieModal from "./CookieModal";
+import { API_BASE } from "@/lib/apiBase";
 
 // ---------- Supabase Backend Call ----------
 async function logConsentToServer(payload) {
   try {
-    const res = await fetch("http://localhost:8080/api/cookies/consent-log", {
+    const res = await fetch(`${API_BASE}/api/cookies/consent-log`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

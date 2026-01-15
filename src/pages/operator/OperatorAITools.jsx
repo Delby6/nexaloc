@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { toast } from "react-hot-toast";
+import { API_BASE } from "@/lib/apiBase";
+
 
 export default function OperatorAITools() {
   const [loading, setLoading] = useState(true);
@@ -138,7 +140,7 @@ async function callAI(prompt, key, mode = "default") {
     }
 
     const res = await fetch(
-      "http://localhost:8080/api/ai/operator/generate",
+      `${API_BASE}/api/ai/operator/generate`,
       {
         method: "POST",
         headers: {

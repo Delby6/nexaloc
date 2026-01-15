@@ -1,6 +1,8 @@
 // src/hooks/useDashboardData.js
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { API_BASE } from "@/lib/apiBase";
+
 
 export function useDashboardData() {
   const [businesses, setBusinesses] = useState([]);
@@ -30,7 +32,7 @@ export function useDashboardData() {
   useEffect(() => {
     async function check() {
       try {
-        const res = await fetch("http://localhost:8080/api/ai/ping");
+        const res = await fetch(`${API_BASE}/api/ai/ping`);
         if (res.ok) setSystemStatus("online");
         else setSystemStatus("offline");
       } catch {

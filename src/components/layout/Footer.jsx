@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
 import NexalocLogo from "@/components/common/NexalocLogo";
 import { useEffect, useState } from "react";
+import { API_BASE } from "@/lib/apiBase";
+
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -13,7 +15,7 @@ export default function Footer() {
   useEffect(() => {
     async function checkStatus() {
       try {
-        const res = await fetch("http://localhost:8080/api/ai/ping");
+        const res = await fetch(`${API_BASE}/api/ai/ping`);
         if (!res.ok) throw new Error();
         setStatus("online");
       } catch (err) {
@@ -180,6 +182,9 @@ export default function Footer() {
           text-[11px] text-slate-500 dark:text-slate-400
         ">
           <p>© {year} Nexaloc. All rights reserved.</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              We are now on Beta, some features may change in the future.
+            </p>
 
           <div className="flex gap-4">
             <NavLink
