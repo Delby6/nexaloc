@@ -41,6 +41,10 @@ const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:5173")
   .split(",")
   .map((s) => s.trim())
   .filter(Boolean);
+  
+  console.log("CORS_ORIGINS env:", process.env.CORS_ORIGINS);
+console.log("Allowed origins parsed:", allowedOrigins);
+
 
 app.set("trust proxy", 1); // important behind Render proxy
 
@@ -59,9 +63,6 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-console.log("CORS_ORIGINS raw:", process.env.CORS_ORIGINS);
-console.log("Allowed origins parsed:", allowedOrigins);
-
 
 
 /* ---------------------------------------------------------
