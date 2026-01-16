@@ -1,33 +1,11 @@
 // server/routes/ai.js
 import express from "express";
-import cors from "cors";
 import OpenAI from "openai";
 
 import { requireProUser } from "../middleware/requireProUser.js";
 import { requireOperatorOrPro } from "../middleware/requireOperatorOrPro.js";
 
 const router = express.Router();
-
-const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:5173";
-
-router.use(
-  cors({
-    origin: allowedOrigin,
-    credentials: true,
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-
-router.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-
-  if (req.method === "OPTIONS") return res.status(200).end();
-  next();
-});
 
 /* -------------------------------------------------------
    OpenAI client (server-side)

@@ -1,35 +1,10 @@
 // server/routes/billing.js
 import express from "express";
 import Stripe from "stripe";
-import cors from "cors";
 import { supabase } from "../supabaseClient.js";
 
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:5173";
-
-/* -------------------------------------------------------
-   CORS
-------------------------------------------------------- */
-router.use(
-  cors({
-    origin: allowedOrigin,
-    credentials: true,
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-
-router.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-
-  if (req.method === "OPTIONS") return res.status(200).end();
-  next();
-});
 
 /* Small helper */
 function handleStripeError(res, context, err) {
