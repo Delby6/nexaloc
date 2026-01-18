@@ -142,8 +142,8 @@ export default function Privacy() {
           <h2 className="text-xl font-semibold mb-2">12. Contact Us</h2>
           <p className="text-sm leading-relaxed">
             For privacy questions, email{" "}
-            <a href="mailto:privacy@example.com" className="text-blue-600 hover:underline">
-              privacy@example.com
+            <a href="mailto:suppot@nexaloc.com" className="text-blue-600 hover:underline">
+              suppot@nexaloc.com
             </a>.
           </p>
         </section>
