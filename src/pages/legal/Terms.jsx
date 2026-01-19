@@ -142,8 +142,8 @@ export default function Terms() {
           <h2 className="text-xl font-semibold mb-2">13. Contact Us</h2>
           <p className="text-sm leading-relaxed">
             For questions, contact{" "}
-            <a href="mailto:suppot@nexaloc.com" className="text-blue-600 hover:underline">
-              suppot@nexaloc.com
+            <a href="mailto:support@nexaloc.com" className="text-blue-600 hover:underline">
+              support@nexaloc.com
             </a>.
           </p>
         </section>
