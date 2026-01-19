@@ -96,8 +96,8 @@ export default function Cookies() {
           <h2 className="text-xl font-semibold mb-2">7. Contact Us</h2>
           <p className="text-sm leading-relaxed">
             If you have questions about this Cookies Policy, email us at{" "}
-            <a href="mailto:suppot@nexaloc.com" className="text-blue-600 hover:underline">
-              suppot@nexaloc.com
+            <a href="mailto:support@nexaloc.com" className="text-blue-600 hover:underline">
+              support@nexaloc.com
             </a>.
           </p>
         </section>
