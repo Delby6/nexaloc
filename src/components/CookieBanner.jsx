@@ -117,17 +117,25 @@ export default function CookieBanner() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 flex justify-center px-4 pt-4 z-[9999] animate-slide-down">
+      <div className="fixed bottom-0 left-0 right-0 flex justify-center px-4 pb-4 z-[9999]">
         <div className="max-w-3xl w-full bg-white dark:bg-slate-800 shadow-xl 
                         rounded-3xl border border-slate-200 dark:border-slate-700 
                         p-5 flex flex-col sm:flex-row items-center gap-4">
 
-          <p className="text-sm text-slate-700 dark:text-slate-300 flex-1">
-            {t("banner.message")}{" "}
-            <Link to="/legal/cookies" className="text-blue-600 dark:text-blue-400 underline">
-              {t("banner.learnMore")}
-            </Link>.
-          </p>
+          <div className="flex-1 space-y-1">
+            <p className="text-sm text-slate-700 dark:text-slate-300">
+              We use cookies to keep Nexaloc working (sign-in & security), understand how it’s used, and improve the platform.
+            </p>
+
+            <p className="text-xs text-slate-600 dark:text-slate-400">
+              Necessary cookies are always on. You can accept all, decline optional cookies, or customize preferences.{" "}
+              <Link to="/legal/cookies" className="text-blue-600 dark:text-blue-400 underline">
+                Learn more
+              </Link>
+              .
+            </p>
+          </div>
+
 
           <div className="flex gap-3 whitespace-nowrap">
             <button
