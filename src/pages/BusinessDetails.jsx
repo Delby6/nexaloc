@@ -10,7 +10,7 @@ import Hero from "@/components/business/public/Hero/Hero";
 import BusinessMap from "@/components/business/public/Map/BusinessMap";
 import ReviewsSection from "@/components/business/public/Reviews/ReviewsSection";
 import RelatedSection from "@/components/business/public/Related/RelatedSection";
-
+import OwnerUserChatCard from "@/components/chat/OwnerUserChatCard";
 import BusinessHeader from "@/components/business/details/BusinessHeader";
 import ContactActions from "@/components/business/details/ContactActions";
 
@@ -93,6 +93,7 @@ export default function BusinessDetails() {
   const reviewsRef = useRef(null);
   const mapRef = useRef(null);
   const relatedRef = useRef(null);
+  const chatRef = useRef(null);
 
   const scrollToSection = (ref) => {
     ref?.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -233,6 +234,21 @@ export default function BusinessDetails() {
             Reviews
           </button>
 
+          {business?.owner_id && (
+            <button
+              onClick={() => scrollToSection(chatRef)}
+              className="
+                px-3 py-1.5 rounded-full text-xs sm:text-sm
+                bg-white text-slate-700 border border-slate-200
+                hover:bg-slate-100 transition
+                dark:bg-slate-900 dark:text-slate-200 dark:border-slate-700 dark:hover:bg-slate-800
+              "
+            >
+              Chat
+            </button>
+          )}
+
+
           {coords && (
             <button
               onClick={() => scrollToSection(mapRef)}
@@ -301,6 +317,20 @@ export default function BusinessDetails() {
             )}
           </motion.div>
         )}
+
+    {/* --------------------------- CHAT --------------------------- */}
+        <motion.div
+          ref={chatRef}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="
+            rounded-2xl p-6 mb-12
+            bg-white border border-slate-200 shadow-xl
+            dark:bg-slate-900 dark:border-slate-800 dark:shadow-xl
+          "
+        >
+          <OwnerUserChatCard business={business} user={user} />
+        </motion.div>
 
         {/* --------------------------- REVIEWS --------------------------- */}
         <motion.div

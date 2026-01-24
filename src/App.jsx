@@ -37,7 +37,7 @@ import ResetPassword from "./pages/ResetPassword";
 import AuthCallback from "./pages/AuthCallback";
 import SettingsPage from "@/pages/Settings";
 import OwnerBilling from "@/pages/owner/OwnerBilling";
-
+import OwnerMessages from "@/pages/owner/OwnerMessages";
 // Dashboards
 import UserDashboard from "@/pages/UserDashboard";
 import OwnerDashboard from "@/pages/owner-dashboard";
@@ -443,6 +443,17 @@ export default function App() {
               <OwnerLayout>
                 <OwnerAiDashboard />
               </OwnerLayout>
+            }
+          />
+
+          <Route
+            path="/owner/messages"
+            element={
+              <OwnerProtectedRoute>
+                <OwnerLayout>
+                  <OwnerMessages />
+                </OwnerLayout>
+              </OwnerProtectedRoute>
             }
           />
 

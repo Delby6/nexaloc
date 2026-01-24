@@ -5,7 +5,7 @@ export default function Join() {
   const navigate = useNavigate();
 
   const handleJoinClick = () => {
-    navigate("/owner-signup"); // 🚀 Redirect to owner login
+    navigate("/owner-signup"); //  Redirect to owner login
   };
 
   return (

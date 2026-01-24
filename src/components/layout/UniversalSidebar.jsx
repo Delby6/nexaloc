@@ -17,7 +17,8 @@ import {
   Sparkles,
   Bell,
   Map,
-  CreditCard
+  CreditCard,
+  MessageSquare
 } from "lucide-react";
 import NexalocLogo from "@/components/common/NexalocLogo";
 import { useRole } from "@/hooks/useRole";
@@ -60,6 +61,7 @@ export default function UniversalSidebar() {
       { to: "/owner-dashboard", label: "Dashboard", icon: Home },
       { to: "/owner/business/add", label: "Add Business", icon: Building2 },
       { to: "/owner/ai-dashboard", label: "AI Advisor", icon: Sparkles, pulse: true },
+      { to: "/owner/messages", label: "Messages", icon: MessageSquare },
       {
         to: "/owner/billing",
         label: (
