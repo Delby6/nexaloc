@@ -1,10 +1,12 @@
 // -------------------------------------------------------------
 // Owner Dashboard (Profile + Business List + AI Button)
 // -------------------------------------------------------------
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/lib/supabaseClient";
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { QRCodeCanvas } from "qrcode.react";
 
 // -------------------------------------------------------------
 // Profile form initial state
@@ -21,6 +23,7 @@ const initialProfileForm = {
 // -------------------------------------------------------------
 export default function OwnerDashboard() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,6 +35,15 @@ export default function OwnerDashboard() {
   const [profileForm, setProfileForm] = useState(initialProfileForm);
   const [savingProfile, setSavingProfile] = useState(false);
   const [savedProfile, setSavedProfile] = useState(false);
+  const [hoverQrId, setHoverQrId] = useState(null);
+  const [modalBusiness, setModalBusiness] = useState(null);
+  const [origin, setOrigin] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.location.origin;
+    }
+    return "";
+  });
+  const qrModalRef = useRef(null);
 
   // -----------------------------------------------------------
   // Load user, profile, businesses
@@ -55,6 +67,14 @@ export default function OwnerDashboard() {
 
     loadData();
   }, [navigate]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const currentOrigin = window.location.origin;
+    if (currentOrigin !== origin) {
+      setOrigin(currentOrigin);
+    }
+  }, [origin]);
 
   async function loadOwnerProfile(user) {
     const { data, error } = await supabase
@@ -120,6 +140,26 @@ export default function OwnerDashboard() {
   async function handleLogout() {
     await supabase.auth.signOut();
     navigate("/owner-login");
+  }
+
+  function handleOpenModal(biz) {
+    setModalBusiness(biz);
+  }
+
+  function handleCloseModal() {
+    setModalBusiness(null);
+  }
+
+  function handleDownload() {
+    const canvas = qrModalRef.current?.querySelector("canvas");
+    if (!canvas || !modalBusiness) return;
+    const link = document.createElement("a");
+    const fileName = modalBusiness?.name
+      ? `${modalBusiness.name.replace(/\s+/g, "-").toLowerCase()}-qr.png`
+      : "business-qr.png";
+    link.href = canvas.toDataURL("image/png");
+    link.download = fileName;
+    link.click();
   }
 
   // -----------------------------------------------------------
@@ -247,7 +287,48 @@ export default function OwnerDashboard() {
           businesses={businesses}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          hoverQrId={hoverQrId}
+          origin={origin}
+          onHover={setHoverQrId}
+          onOpenModal={handleOpenModal}
         />
+        {modalBusiness && origin && (
+          <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-4">
+            <div className="w-full max-w-sm space-y-4 rounded-3xl bg-white p-4 text-center shadow-2xl dark:bg-slate-900">
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+                {modalBusiness.name}
+              </h3>
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+                {t("scan_open_listing")}
+              </p>
+              <div
+                ref={qrModalRef}
+                className="mx-auto max-w-[90vw] rounded-2xl bg-white p-4 shadow dark:bg-slate-900"
+              >
+                <QRCodeCanvas
+                  value={`${origin}/business/${modalBusiness.id}`}
+                  size={200}
+                  level="H"
+                  includeMargin
+                />
+              </div>
+              <div className="flex items-center justify-center gap-3 text-sm">
+                <button
+                  onClick={handleCloseModal}
+                  className="rounded-xl border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:border-slate-400 dark:border-slate-700 dark:text-slate-200"
+                >
+                  Close
+                </button>
+                <button
+                  onClick={handleDownload}
+                  className="rounded-xl bg-sky-600 px-4 py-2 font-semibold text-white hover:bg-sky-700"
+                >
+                  Download
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -257,24 +338,24 @@ export default function OwnerDashboard() {
 // Page Header (UPDATED – includes AI button)
 // -------------------------------------------------------------
 function PageHeader({ ownerProfile, onLogout }) {
+  const { t } = useTranslation();
   return (
     <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-          Business Dashboard
+          {t("business_dashboard_title")}
         </h1>
         {ownerProfile && (
           <p className="text-gray-400 text-sm mt-1">
-            👋 Welcome,{" "}
-            <span className="text-sky-400 font-medium">
-              {ownerProfile.full_name}
-            </span>{" "}
-            ({ownerProfile.email})
+            {t("business_dashboard_welcome", {
+              name: ownerProfile.full_name,
+              email: ownerProfile.email,
+            })}
           </p>
         )}
       </div>
 
-    
+
     </header>
   );
 }
@@ -292,6 +373,7 @@ function ProfileSection({
   savingProfile,
   savedProfile,
 }) {
+  const { t } = useTranslation();
   return (
     <section
       className="
@@ -303,23 +385,23 @@ function ProfileSection({
     >
 
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold">Profile Information</h2>
+        <h2 className="text-lg font-semibold">{t("profile_information")}</h2>
         <button
           onClick={() => setEditingProfile((prev) => !prev)}
           className="btn-shimmer bg-sky-600 hover:bg-sky-700 px-3 py-1.5 rounded text-xs sm:text-sm"
         >
-          {editingProfile ? "Cancel" : "Edit Profile"}
+          {editingProfile ? t("Cancel") : t("edit_profile")}
         </button>
       </div>
 
       {!editingProfile ? (
         <div className="space-y-1.5 text-sm">
           <p>
-            <span className="text-slate-400">Full Name:</span>{" "}
+            <span className="text-slate-400">{t("profile_full_name")}:</span>{" "}
             <span className="font-medium">{ownerProfile?.full_name}</span>
           </p>
           <p>
-            <span className="text-slate-400">Email:</span>{" "}
+            <span className="text-slate-400">{t("profile_email")}:</span>{" "}
             <span className="font-medium">{ownerProfile?.email}</span>
           </p>
         </div>
@@ -410,10 +492,10 @@ function ProfileSection({
                 <span className="text-green-400 text-lg mr-2">✔</span>
               ) : null}
               {savingProfile
-                ? "Saving..."
-                : savedProfile
-                ? "Saved!"
-                : "Save Profile"}
+            ? t("Saving...")
+            : savedProfile
+            ? t("Saved successfully!")
+            : t("save_profile")}
             </button>
 
             <p
@@ -435,7 +517,16 @@ function ProfileSection({
 // -------------------------------------------------------------
 // Business Table
 // -------------------------------------------------------------
-function BusinessTable({ businesses, onEdit, onDelete }) {
+function BusinessTable({
+  businesses,
+  onEdit,
+  onDelete,
+  hoverQrId,
+  origin,
+  onHover,
+  onOpenModal,
+}) {
+  const { t } = useTranslation();
   return (
     <section
       className="
@@ -445,7 +536,7 @@ function BusinessTable({ businesses, onEdit, onDelete }) {
         transition-colors
       "
     >
-      <h2 className="text-lg font-semibold mb-3">Your Businesses</h2>
+      <h2 className="text-lg font-semibold mb-3">{t("your_businesses")}</h2>
 
       {businesses.length === 0 ? (
         <p className="text-gray-400 text-sm">
@@ -453,7 +544,7 @@ function BusinessTable({ businesses, onEdit, onDelete }) {
         </p>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-slate-800">
-          <table className="w-full text-sm">
+          <table className="min-w-full text-sm">
             <thead className="
                               border-t border-slate-200
                               dark:border-slate-800
@@ -463,25 +554,25 @@ function BusinessTable({ businesses, onEdit, onDelete }) {
                             "
                             >
               <tr>
-                <th className="text-left p-3 font-medium text-slate-300">
+                <th className="text-left p-3 font-medium text-slate-300 hidden sm:table-cell">
                   Image
                 </th>
                 <th className="text-left p-3 font-medium text-slate-300">
                   Name
                 </th>
-                <th className="text-left p-3 font-medium text-slate-300">
+                <th className="text-left p-3 font-medium text-slate-300 hidden sm:table-cell">
                   Category
                 </th>
-                <th className="text-left p-3 font-medium text-slate-300">
+                <th className="text-left p-3 font-medium text-slate-300 hidden lg:table-cell">
                   City
                 </th>
-                <th className="text-left p-3 font-medium text-slate-300">
+                <th className="text-left p-3 font-medium text-slate-300 hidden md:table-cell">
                   Phone
                 </th>
-                <th className="text-left p-3 font-medium text-slate-300">
+                <th className="text-left p-3 font-medium text-slate-300 hidden lg:table-cell">
                   Email
                 </th>
-                <th className="text-left p-3 font-medium text-slate-300">
+                <th className="text-left p-3 font-medium text-slate-300 hidden lg:table-cell">
                   Website
                 </th>
                 <th className="text-left p-3 font-medium text-slate-300">
@@ -495,7 +586,7 @@ function BusinessTable({ businesses, onEdit, onDelete }) {
                   key={biz.id}
                   className="border-t border-slate-800 hover:bg-slate-900/70 transition"
                 >
-                  <td className="p-3">
+                  <td className="p-3 hidden sm:table-cell">
                     {biz.image_url ? (
                       <img
                         src={biz.image_url}
@@ -506,12 +597,17 @@ function BusinessTable({ businesses, onEdit, onDelete }) {
                       <span className="text-gray-500 text-xs">No image</span>
                     )}
                   </td>
-                  <td className="p-3 font-medium">{biz.name}</td>
-                  <td className="p-3">{biz.category}</td>
-                  <td className="p-3">{biz.village}</td>
-                  <td className="p-3">{biz.phone}</td>
-                  <td className="p-3">{biz.contact}</td>
-                  <td className="p-3">
+                  <td className="p-3 font-medium">
+                    <div>{biz.name}</div>
+                    <p className="text-xs text-slate-400 sm:hidden">
+                      {biz.category} · {biz.village}
+                    </p>
+                  </td>
+                  <td className="p-3 hidden sm:table-cell">{biz.category}</td>
+                  <td className="p-3 hidden lg:table-cell">{biz.village}</td>
+                  <td className="p-3 hidden md:table-cell">{biz.phone}</td>
+                  <td className="p-3 hidden lg:table-cell">{biz.contact}</td>
+                  <td className="p-3 hidden lg:table-cell">
                     {biz.website ? (
                       <a
                         href={biz.website}
@@ -525,28 +621,46 @@ function BusinessTable({ businesses, onEdit, onDelete }) {
                       "-"
                     )}
                   </td>
-                 <td className="p-3 space-x-2 whitespace-nowrap">
-                  <Link
-                    to={`/owner/business-card/${biz.id}`}
-                    className="btn-shimmer bg-sky-600 hover:bg-sky-700 px-3 py-1 rounded text-xs text-white"
-                  >
-                    Card
-                  </Link>
-
-                  <button
-                    onClick={() => onEdit(biz)}
-                    className="btn-shimmer bg-amber-500 hover:bg-amber-600 px-3 py-1 rounded text-xs text-white"
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    onClick={() => onDelete(biz.id)}
-                    className="btn-shimmer bg-rose-600 hover:bg-rose-700 px-3 py-1 rounded text-xs text-white"
-                  >
-                    Delete
-                  </button>
-                </td>
+                  <td className="p-3 relative">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:flex-wrap">
+                      <Link
+                        to={`/owner/business-card/${biz.id}`}
+                        className="w-full rounded-xl bg-sky-600 px-3 py-1 text-center text-xs font-semibold text-white transition hover:bg-sky-700 sm:w-auto"
+                      >
+                        {t("action_card")}
+                      </Link>
+                      <button
+                        type="button"
+                        onMouseEnter={() => onHover(biz.id)}
+                        onMouseLeave={() => onHover(null)}
+                        onClick={() => onOpenModal(biz)}
+                        className="w-full rounded-xl border border-slate-300 bg-white px-3 py-1 text-center text-xs font-semibold text-slate-700 transition hover:border-slate-400 hover:text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 sm:w-auto"
+                      >
+                        {t("action_qr")}
+                      </button>
+                      <button
+                        onClick={() => onEdit(biz)}
+                        className="w-full rounded-xl bg-amber-500 px-3 py-1 text-center text-xs font-semibold text-white transition hover:bg-amber-600 sm:w-auto"
+                      >
+                        {t("action_edit")}
+                      </button>
+                      <button
+                        onClick={() => onDelete(biz.id)}
+                        className="w-full rounded-xl bg-rose-600 px-3 py-1 text-center text-xs font-semibold text-white transition hover:bg-rose-700 sm:w-auto"
+                      >
+                        {t("action_delete")}
+                      </button>
+                    </div>
+                    {hoverQrId === biz.id && origin && (
+                      <div className="absolute top-full left-0 mt-1 z-10 w-32 rounded-xl border border-slate-300 bg-white p-2 shadow-lg dark:border-slate-700 dark:bg-slate-900">
+                        <QRCodeCanvas
+                          value={`${origin}/business/${biz.id}`}
+                          size={80}
+                          level="M"
+                        />
+                      </div>
+                    )}
+                  </td>
 
                 </tr>
               ))}
